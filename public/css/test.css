@@ -20,10 +20,10 @@
 }
 
 /* Bonus : Toute la hauteur ? */
-// .website {min-height: 100vh;}
+ .website {min-height: 100vh;}
 
 /* Bonus : Centré ? */
-// .website {max-width: 800px; margin: 0 auto;}
+ .website {max-width: 800px; margin: 0 auto;}
 
 /* Base */
 body {
