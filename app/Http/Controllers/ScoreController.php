@@ -1,35 +1,34 @@
 <?php
 
-namespace App\Http\Controllers;
+
 
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\m_insertion_score;
+use App\Models\ScoreModel;
 use Illuminate\Support\Facades\Auth;
 
-class c_insertion_score extends Controller
+class ScoreController extends Controller
 {
-    //Sélection du concours
-    public function selectConcours()
-    {
-        $concours = m_insertion_score::getConcours();
-        return view('pages/insertion_score/selection_concours', ['concours'=>$concours]);
+    
+public function ConcoursActif()
+{
+    $concours = ScoreModel::getConcoursActif();
+
+    if (!$concours) {
+        return back()->withErrors(['concours' => 'Aucun concours actif trouvé.']);
     }
 
-public function form()
-{
-    $idConcours = session('id_concours');
+    $equipes = ScoreModel::getEquipesConcours($concours->id);
+    $epreuves = ScoreModel::getEpreuvesConcours($concours->id);
 
-    if (!$idConcours) {
-        return redirect()->route('insertion_score.select');
-    }
-
-    $equipes = m_insertion_score::getEquipesConcours($idConcours);
-    $epreuves = m_insertion_score::getEpreuvesConcours($idConcours);
-
-    return view('pages.insertion_score.insertion_score', ['equipes' => $equipes, 'epreuves' => $epreuves]);
+    return view('pages.insertion_score.insertion_score', [
+        'equipes' => $equipes,
+        'epreuves' => $epreuves,
+        'concours' => $concours
+    ]);
 }
+
 
 public function concoursChoisi(Request $request)
 {
@@ -44,15 +43,15 @@ public function concoursChoisi(Request $request)
     {
         $resultat = back()->with('success', 'Score enregistré avec succès !');
 
-        if ((m_insertion_score::scoreValide($request->id_epreuve, $request->score)) == false) {
+        if ((ScoreModel::scoreValide($request->id_epreuve, $request->score)) == false) {
             $resultat = back()->withErrors(['score' => 'Le score dépasse le maximum autorisé.']);
         }
 
-        if ((m_insertion_score::scoreExiste($request->id_equipe, $request->id_epreuve)) == true) {
+        if ((ScoreModel::scoreExiste($request->id_equipe, $request->id_epreuve)) == true) {
             $resultat = back()->withErrors(['score' => 'Un score existe déjà pour cette équipe et cette épreuve.']);
         }
 
-        m_insertion_score::insertScore([
+        ScoreModel::insertScore([
             //'id_secretaire' => Auth::id(),
             'id_secretaire' => 1096,
             'id_equipe' => $request->id_equipe,
@@ -64,5 +63,12 @@ public function concoursChoisi(Request $request)
         ]);
 
         return $resultat;
+    }
+
+    public function listeScores()
+    {
+    $scores = ScoreModel::getAllScoresDetails(); 
+
+    return view('pages.modification_score.modif_score', ['scores' => $scores]);
     }
 }

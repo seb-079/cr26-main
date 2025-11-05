@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
-class m_insertion_score extends Model
+class ScoreModel extends Model
 {
 
 
@@ -31,6 +31,11 @@ class m_insertion_score extends Model
     public static function getEpreuvesConcours($idConcours)
     {
         return DB::table('epreuves')->where('id_concours', $idConcours)->get();
+    }
+
+        public static function getConcoursActif()
+    {
+        return DB::table('concours')->where('actif', 1)->first();
     }
 
     
@@ -69,5 +74,26 @@ class m_insertion_score extends Model
     public static function insertScore($score)
     {
         return DB::table('scorer')->insert($score);
+    }
+
+    public static function getScorer()
+    {
+    return DB::table('scorer')->get();
+    }
+
+    public static function getAllScoresDetails()
+    {
+    return DB::table('scorer')
+        ->join('equipes', 'scorer.id_equipe', '=', 'equipes.id')
+        ->join('epreuves', 'scorer.id_epreuve', '=', 'epreuves.id')
+        ->select(
+            'equipes.nom as equipe_nom',
+            'epreuves.nom as epreuve_nom',
+            'equipes.code as equipe_code',
+            'epreuves.code as epreuve_code',
+            'scorer.score',
+            'scorer.commentaire'
+        )
+        ->get();
     }
 }

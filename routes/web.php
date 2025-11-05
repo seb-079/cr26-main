@@ -17,23 +17,29 @@ Route::get('/accueil', function () {
 Route::get('/mentions_legales', function () {
     return view('mentions_legales');
 });
-use App\Http\Controllers\TestControroller;
-Route::get('/test2', [TestControroller::class, 'index']);
 
-use App\Http\Controllers\c_insertion_score;
+
+use App\Http\Controllers\ScoreController;
 
 //Selection concours 
-Route::get('/pages/insertion_score', [c_insertion_score::class, 'selectConcours'])
+Route::get('/pages/insertion_score', [ScoreController::class, 'selectConcours'])
     ->name('insertion_score.select');
 
 // enregistrer concours choisi
-Route::post('/pages/insertion_score/choisir', [c_insertion_score::class, 'concoursChoisi'])
+Route::post('/pages/insertion_score/choisir', [ScoreController::class, 'concoursChoisi'])
     ->name('insertion_score.choisir');
 
 // formulaire saisi score
-Route::get('/pages/insertion_score/form', [c_insertion_score::class, 'form'])
+Route::get('/pages/insertion_score/form', [ScoreController::class, 'concoursActif'])
     ->name('insertion_score.form');
 
 // sauvegarde saisi score
-Route::post('/pages/insertion_score/save', [c_insertion_score::class, 'save'])
+Route::post('/pages/insertion_score/save', [ScoreController::class, 'save'])
     ->name('insertion_score.save');
+
+
+Route::get('/insertion_score/search', [ScoreController::class, 'searchEquipe'])->name('insertion_score.searchEquipe');
+
+Route::get('/pages/modification_score/liste', [ScoreController::class, 'listeScores'])
+    ->name('modif_score.liste');
+
