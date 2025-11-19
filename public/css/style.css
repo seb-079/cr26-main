@@ -1,0 +1,524 @@
+
+/* --- Reset global --- */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background: #44758b;
+    color: #222;
+    
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* --- Navbar --- */
+.navbar {
+    background: #fff;
+    padding: 0.7rem 1.5rem;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    position: sticky;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Branding */
+.navbar-brand {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.navbar-brand a {
+    font-weight: bold;
+    font-size: 1.5rem;
+    letter-spacing: 1px;
+    color: #222;
+}
+
+/* --- Burger Mobile --- */
+.burger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+
+.burger span {
+    width: 26px;
+    height: 3px;
+    background: #222;
+    border-radius: 3px;
+}
+
+/* --- Menu principal --- */
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+/* Items */
+.nav-links li {
+    position: relative;
+}
+
+.nav-links a {
+    font-weight: 500;
+    font-size: 1rem;
+    padding: 0.45rem 0.6rem;
+    display: flex;
+    align-items: center;
+    transition: .2s;
+}
+
+.nav-links > li > a:hover {
+    color: #44758b;
+}
+
+/* Flèche ▼ */
+.arrow {
+    margin-left: 5px;
+    font-size: .8em;
+    transition: transform .3s ease;
+}
+
+/* Rotation flèche */
+.dropdown:hover > a .arrow,
+.dropdown:focus-within > a .arrow {
+    transform: rotate(180deg);
+}
+
+/* --- Dropdown --- */
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    background: #fff;
+    list-style: none;
+    padding: 0.4rem 0;
+    border-radius: 6px;
+    min-width: 180px;
+    top: 100%;
+    left: 0;
+
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    z-index: 200;
+}
+
+.dropdown:hover > .dropdown-menu,
+.dropdown:focus-within > .dropdown-menu {
+    display: block;
+}
+
+/* Items dropdown */
+.dropdown-menu li a {
+    padding: 0.5rem 1rem;
+    display: block;
+    font-size: .95rem;
+}
+
+.dropdown-menu li a:hover {
+    background: #f5f5f5;
+    color: #44758b;
+}
+
+/* Sous-dropdown droit */
+.dropdown-menu .dropdown {
+    position: relative;
+}
+
+.dropdown-menu .dropdown-menu {
+    top: 0;
+    left: 100%;
+}
+
+/* --- Boutons connexion --- */
+.login-btn a {
+    background: #000;
+    color: #fff;
+    padding: 0.5rem 1rem;
+    border-radius: 25px;
+    font-weight: 600;
+    font-size: 1rem;
+    transition: background 0.2s ease;
+}
+
+.login-btn a:hover {
+    background: #333;
+}
+
+/* --- Responsive --- */
+@media (max-width: 768px) {
+
+    .burger {
+        display: flex;
+    }
+
+    .navbar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: .5rem;
+    }
+
+    .nav-links {
+        flex-direction: column;
+        display: none;
+        width: 100%;
+        padding-top: .5rem;
+    }
+
+    .nav-links.active {
+        display: flex;
+    }
+
+    /* Dropdown en colonne */
+    .dropdown-menu {
+        position: static;
+        box-shadow: none;
+        width: 100%;
+        background: #fafafa;
+        border-radius: 0;
+    }
+
+    .dropdown-menu .dropdown-menu {
+        position: static;
+        left: 0;
+    }
+}
+
+/* --- Footer --- */
+.site-footer {
+    background-color: #ffffff;
+    color: #fff;
+    text-align: center;
+    padding: 1.2rem 0;
+    margin-top: 2rem;
+    width: 100%;
+}
+
+.site-footer p {
+    font-size: 0.95rem;
+    letter-spacing: 0.5px;
+}
+
+/* Fixe le footer en bas si peu de contenu */
+.wrapper {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+main#main {
+    padding-top: 120px; /* ou la hauteur exacte de la navbar */
+    flex: 1;
+}
+
+/* --- Formulaires --- */
+.form-container {
+    background: #fff;
+    padding: 2rem;
+    max-width: 600px;
+    margin: 2rem auto;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+/* --- Titre de formulaire centré + typo antique --- */
+.form-container h1,
+.form-container h2,
+.form-container h3 {
+    text-align: center;
+    font-family: 'Helvetica', serif; /* Style antique */
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+}
+
+
+form .form-group {
+    margin-bottom: 1.2rem;
+    display: flex;
+    flex-direction: column;
+}
+
+form label {
+    font-size: 1rem;
+    font-weight: 500;
+    margin-bottom: 0.4rem;
+    color: #333;
+}
+
+form input,
+form select,
+form textarea {
+    width: 100%;
+    padding: 0.7rem 1rem;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    transition: border 0.2s ease, box-shadow 0.2s ease;
+    background: #fff;
+}
+
+form input:focus,
+form select:focus,
+form textarea:focus {
+    border-color: #44758b;
+    outline: none;
+    box-shadow: 0 0 3px rgba(0,119,204,0.4);
+}
+
+textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+/* Bouton principal */
+.btn-primary {
+    background: #44758b;
+    border: none;
+    color: #fff;
+    padding: 0.7rem 1.4rem;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background 0.2s ease;
+}
+
+.btn-primary:hover {
+    background: #44758b;
+}
+
+/* Bouton danger (ex: supprimer) */
+.btn-danger {
+    background: #cc0000;
+    color: white;
+    padding: 0.7rem 1.4rem;
+    border-radius: 8px;
+    font-size: 1rem;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background 0.2s ease;
+}
+
+.btn-danger:hover {
+    background: #a30000;
+}
+
+/* Messages d’erreur Laravel */
+.error-message {
+    color: #cc0000;
+    font-size: 0.9rem;
+    margin-top: 0.3rem;
+}
+
+/* Message de succès */
+.success-message {
+    background: #e6ffed;
+    border-left: 4px solid #2ecc71;
+    color: #2b8a60;
+    padding: 0.8rem 1rem;
+    border-radius: 6px;
+    margin-bottom: 1rem;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+    .form-container {
+        padding: 1.3rem;
+    }
+}
+
+/* --- Formulaire 2 colonnes à l'intérieur d'un formulaire --- */
+.form-container .form-2cols {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* deux colonnes égales */
+    gap: 1.5rem 1rem; /* espace entre lignes et colonnes */
+}
+
+/* Chaque groupe de champs dans la grille */
+.form-container .form-2cols .form-group {
+    margin-bottom: 1rem;
+}
+
+/* Pour les champs qui doivent prendre toute la largeur */
+.form-container .form-2cols .full-width {
+    grid-column: 1 / -1; /* occupe les deux colonnes */
+}
+
+/* Responsive : passe à une seule colonne sur mobile */
+@media (max-width: 768px) {
+    .form-container .form-2cols {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* --- Formulaire 2 colonnes --- */
+.form-2cols {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* 2 colonnes égales */
+    gap: 1.5rem 2rem; /* row-gap / column-gap */
+}
+
+.form-2cols .form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Sur mobile, passe en 1 colonne */
+@media (max-width: 768px) {
+    .form-2cols {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* --- Tableaux --- */
+.table-wrapper {
+    width: 100%;
+    overflow-x: auto; /* scroll horizontal si trop large */
+    margin: 0;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #fff;
+    border: 1px solid #ccc;
+}
+
+thead tr {
+    background-color: #f0f0f0;
+}
+
+th, td {
+    border: 1px solid #ccc;
+    padding: 0.75rem 1rem;
+    text-align: left;
+}
+
+th {
+    font-weight: 600;
+}
+
+tbody tr:nth-child(even) {
+    background-color: #fafafa;
+}
+
+/* Boutons d’action dans table */
+td .btn {
+    display: inline-block;
+    padding: 0.4rem 0.8rem;
+    border-radius: 5px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-decoration: none;
+    color: #fff;
+    transition: 0.2s;
+}
+
+
+/* Responsive : table scroll sur petit écran */
+@media (max-width: 768px) {
+    .table-wrapper {
+        overflow-x: auto;
+    }
+}
+
+/* --- Table page styles --- */
+.table-page {
+    background-color: #f2f2f2; /* fond gris clair */
+    padding: 2rem;
+    min-height: calc(100vh - 0px); /* ou juste 100vh si navbar fixed */
+}
+
+
+/* Table générale */
+.table-page table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #fff; /* fond des cellules blanc */
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+/* Entête de table */
+.table-page th {
+    background-color: #44758b; /* bleu */
+    color: #fff; /* texte blanc */
+    font-weight: 600;
+    padding: 10px;
+    text-align: left;
+}
+
+/* Lignes de corps de table */
+.table-page td {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+/* Lignes impaires un peu plus claires */
+.table-page tbody tr:nth-child(odd) {
+    background-color: #f9f9f9;
+}
+
+/* Boutons dans table */
+.table-page .btn-edit {
+    background-color: #44758b; /* bleu */
+    color: #fff;
+    padding: 6px 12px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: background 0.2s;
+}
+
+
+.table-page .btn-edit:hover {
+    background-color: #2f5a70;
+}
+
+.table-page .btn-delete {
+    background-color: #888; /* gris */
+    color: #fff;
+    padding: 6px 12px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: background 0.2s;
+}
+
+.table-page .btn-delete:hover {
+    background-color: #555;
+}
+
+/* Centrer les actions */
+.table-page td.actions {
+    text-align: center;
+}
+
+
+
+
+
+
+
+
+

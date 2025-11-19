@@ -7,93 +7,113 @@ use Illuminate\Support\Facades\DB;
 
 class ScoreModel extends Model
 {
+    protected $table = 'scorer';
+    protected $fillable = [
+        'id_secretaire',
+        'id_equipe',
+        'id_epreuve',
+        'score',
+        'commentaire',
+        'created_at',
+        'updated_at'
+    ];
 
-
-    
-     // Récupère la liste des concours
-     
-    public static function getConcours()
-    {
-        return DB::table('concours')->get();
-    }
-
-    //recupere les equipes de concours
-    public static function getEquipesConcours($idConcours)
-    {
-        return DB::table('equipes')
-                ->where('id_concours', $idConcours)
-                ->get();
-    }
-
-    
-    //recupere les epreuves de concours
-    
-    public static function getEpreuvesConcours($idConcours)
-    {
-        return DB::table('epreuves')->where('id_concours', $idConcours)->get();
-    }
-
-        public static function getConcoursActif()
-    {
-        return DB::table('concours')->where('actif', 1)->first();
-    }
-
-    
-    //verifie si un score existe déjà pour une équipe et une épreuve
-     
+    /**
+     * Vérifie si un score existe déjà pour une équipe et une épreuve
+     */
     public static function scoreExiste($idEquipe, $idEpreuve)
     {
-        return DB::table('scorer')->where('id_equipe', $idEquipe)->where('id_epreuve', $idEpreuve)->exists();
+        return DB::table('scorer')
+            ->where('id_equipe', $idEquipe)
+            ->where('id_epreuve', $idEpreuve)
+            ->exists();
     }
 
-    //verifie si le score est pas vide et que son core rentre dans la range prevu
+    /**
+     * Vérifie la validité d'un score
+     */
     public static function scoreValide($idEpreuve, $score)
     {
-        $resultat = true;
         $epreuve = DB::table('epreuves')->find($idEpreuve);
-        $score_max = $epreuve->score_max;
 
-        if ( !(is_numeric($score)) ) {
-            $resultat = false;
+        if (!$epreuve || !is_numeric($score)) {
+            return false;
         }
-        if ($epreuve == null) {
-            $resultat = false;
-        }
-        elseif (($score_max < $score) || ($score < 0)) {
-            $resultat = false;
-        }
-        return $resultat;
 
-        
-
+        return $score >= 0 && $score <= $epreuve->score_max;
     }
 
-    
-    //Inserer les donner du formulaire score
-    
-    public static function insertScore($score)
+    /**
+     * Insère un nouveau score
+     */
+    public static function insertScore($data)
     {
-        return DB::table('scorer')->insert($score);
+        return DB::table('scorer')->insert($data);
     }
 
-    public static function getScorer()
-    {
-    return DB::table('scorer')->get();
-    }
-
-    public static function getAllScoresDetails()
-    {
-    return DB::table('scorer')
-        ->join('equipes', 'scorer.id_equipe', '=', 'equipes.id')
-        ->join('epreuves', 'scorer.id_epreuve', '=', 'epreuves.id')
+    /**
+     * Récupère tous les scores détaillés (avec noms et codes)
+     */
+public static function getAllScoresDetails($recherche = null)
+{
+    $query = DB::table('scorer as s')
+        ->join('equipes as e', 's.id_equipe', '=', 'e.id')
+        ->join('epreuves as ep', 's.id_epreuve', '=', 'ep.id')
         ->select(
-            'equipes.nom as equipe_nom',
-            'epreuves.nom as epreuve_nom',
-            'equipes.code as equipe_code',
-            'epreuves.code as epreuve_code',
-            'scorer.score',
-            'scorer.commentaire'
-        )
-        ->get();
+            's.id_equipe',
+            's.id_epreuve',
+            'e.nom as equipe_nom',
+            'ep.nom as epreuve_nom',
+            'e.code as equipe_code',
+            'ep.code as epreuve_code',
+            's.score',
+            's.commentaire'
+        );
+
+    if (!empty($recherche)) {
+        $query->where(function($q) use ($recherche) {
+            $q->where('e.nom', 'like', "%{$recherche}%")
+              ->orWhere('ep.nom', 'like', "%{$recherche}%")
+              ->orWhere('e.code', 'like', "%{$recherche}%")
+              ->orWhere('ep.code', 'like', "%{$recherche}%");
+        });
+    }
+
+    return $query->get();
+}
+
+       
+
+    /**
+     * Récupère un score précis (équipe + épreuve)
+     */
+    public static function getScore($idEquipe, $idEpreuve)
+    {
+        return DB::table('scorer')
+            ->where('id_equipe', $idEquipe)
+            ->where('id_epreuve', $idEpreuve)
+            ->first();
+    }
+
+    /**
+     * Mettre à jour un score existant
+     */
+    public static function updateScore($idEquipe, $idEpreuve, $data)
+    {
+        return DB::table('scorer')
+            ->where('id_equipe', $idEquipe)
+            ->where('id_epreuve', $idEpreuve)
+            ->update($data);
+    }
+
+    /**
+     * Supprimer un score
+     */
+    public static function deleteScore($idEquipe, $idEpreuve)
+    {
+        return DB::table('scorer')
+            ->where('id_equipe', $idEquipe)
+            ->where('id_epreuve', $idEpreuve)
+            ->delete();
     }
 }
