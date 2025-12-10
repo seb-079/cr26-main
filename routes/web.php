@@ -10,10 +10,6 @@ Route::view('/accueil', 'accueil');
 Route::view('/mentions_legales', 'mentions_legales');
 Route::view('/test', 'test');
 
-// Dashboard et profil (auth)
-Route::view('/dashboard', 'dashboard')
-    ->middleware(['auth', 'verified'])
-    ->name('dashboard');
 
 Route::view('/profile', 'profile')
     ->middleware(['auth'])
@@ -112,10 +108,6 @@ Volt::route('logout', 'pages.auth.logout')->name('logout');
 
 
 Route::resource('users', UserController::class);
-
-Route::view('dashboard', 'dashboard')
-    ->middleware(['auth', 'verified'])
-    ->name('dashboard');
 
 Route::view('profile', 'profile')
     ->middleware(['auth'])

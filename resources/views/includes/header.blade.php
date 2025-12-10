@@ -83,7 +83,7 @@
 
         <!-- Déconnexion (Livewire) -->
         <li>
-            @livewire('layout.navigation')
+            @livewire('logout-button')
         </li>
 
         @endguest
