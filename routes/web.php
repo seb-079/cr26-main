@@ -26,7 +26,7 @@ require __DIR__.'/auth.php';
 // Formulaire pour le concours actif
 Route::get('/pages/insertion_score/form', [ScoreController::class, 'form'])
     ->name('scores.form')
-    ->middleware(CheckRole::class . ':50,60,,90');
+    ->middleware(CheckRole::class . ':50,60,90');
 
 // Sauvegarde du score
 Route::post('/pages/insertion_score/save', [ScoreController::class, 'save'])
@@ -56,7 +56,7 @@ Route::post('/scores/{id_equipe}/{id_epreuve}/update', [ScoreController::class, 
 // Recherche d'équipes (optionnelle)
 Route::get('/insertion_score/search', [ScoreController::class, 'searchEquipe'])
     ->name('scores.searchEquipe')
-    ->middleware(CheckRole::class . ':60,90');
+    ->middleware(CheckRole::class . ':50,60,90');
 
 
 use App\Http\Controllers\PageController;
@@ -81,7 +81,7 @@ Route::get('/edition/2024', [PageController::class, 'show2024'])->name('edition.
 Route::get('/edition/2025', [PageController::class, 'show2025'])->name('edition.2025');
 
 // Saisie Note
-Route::get('/saisie-note', [PageController::class, 'saisie-note'])->name('saisieNote.index') ->middleware(CheckRole::class . ':90, 50, 60');
+Route::get('/saisie-note', [PageController::class, 'saisie-note'])->name('saisieNote.index') ->middleware(CheckRole::class . ':90');
 
 // Page Gestion
 Route::prefix('gestion')->group(function () {
