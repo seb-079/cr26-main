@@ -81,7 +81,7 @@ Route::get('/edition/2024', [PageController::class, 'show2024'])->name('edition.
 Route::get('/edition/2025', [PageController::class, 'show2025'])->name('edition.2025');
 
 // Saisie Note
-Route::get('/saisie-note', [PageController::class, 'saisie-note'])->name('saisieNote.index');
+Route::get('/saisie-note', [PageController::class, 'saisie-note'])->name('saisieNote.index') ->middleware(CheckRole::class . ':90, 50, 60');
 
 // Page Gestion
 Route::prefix('gestion')->group(function () {
