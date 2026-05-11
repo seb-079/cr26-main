@@ -54,7 +54,7 @@ class ScoreModel extends Model
     /**
      * Récupère tous les scores détaillés (avec noms et codes)
      */
-public static function getAllScoresDetails($recherche = null)
+public static function getAllScoresDetails($recherche = null, $idSecretaire = null)
 {
     $query = DB::table('scorer as s')
         ->join('equipes as e', 's.id_equipe', '=', 'e.id')
@@ -62,14 +62,17 @@ public static function getAllScoresDetails($recherche = null)
         ->select(
             's.id_equipe',
             's.id_epreuve',
+            's.id_secretaire',
             'e.nom as equipe_nom',
             'ep.nom as epreuve_nom',
             'e.code as equipe_code',
             'ep.code as epreuve_code',
             's.score',
-            's.commentaire'
+            's.commentaire',
+            's.verifier'
         );
 
+    // Filtre equipe
     if (!empty($recherche)) {
         $query->where(function($q) use ($recherche) {
             $q->where('e.nom', 'like', "%{$recherche}%")
@@ -79,9 +82,13 @@ public static function getAllScoresDetails($recherche = null)
         });
     }
 
+    // Filtre secrétaire
+    if (!empty($idSecretaire)) {
+        $query->where('s.id_secretaire', $idSecretaire);
+    }
+
     return $query->get();
 }
-
        
 
     /**
@@ -116,4 +123,21 @@ public static function getAllScoresDetails($recherche = null)
             ->where('id_epreuve', $idEpreuve)
             ->delete();
     }
+
+    public static function isFalse()
+    {
+    return DB::table('scorer')
+        ->where('verifier', false) 
+        ->get();
+    }
+
+public static function atTrue($idEquipe, $idEpreuve)
+    {
+    return DB::table('scorer')
+        ->where('id_equipe', $idEquipe)
+        ->where('id_epreuve', $idEpreuve)
+        ->update(['verifier' => true, 'updated_at' => now()]);
+    }
 }
+
+

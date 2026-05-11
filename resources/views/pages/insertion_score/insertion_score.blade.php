@@ -34,18 +34,25 @@
         </div>
     </div>
 
-    <div class="form-column">
-        {{-- Colonne 2 --}}
-        <div class="form-group">
-            {{-- Score --}}
-            <label for="score">Score</label>
-            <input type="number" name="score" id="score" step="0.1" min="0" required>
+<div class="form-column">
+    {{-- Colonne 2 --}}
+    <div class="form-group">
+        {{-- Score --}}
+        <label for="score">Score</label>
+        <input type="number" 
+               name="score" 
+               id="score" 
+               step="0.1" 
+               min="0" 
+               max="{{ $epreuve->score_max }}" 
+               placeholder="Maximum : {{ $epreuve->score_max }}" 
+               required>
 
-            {{-- Commentaire --}}
-            <label for="commentaire">Commentaire</label>
-            <textarea name="commentaire" id="commentaire" rows="3"></textarea>
-        </div>
+        {{-- Commentaire --}}
+        <label for="commentaire">Commentaire</label>
+        <textarea name="commentaire" id="commentaire" rows="3"></textarea>
     </div>
+</div>
 
     {{-- Messages d'erreur --}}
     @if ($errors->any())

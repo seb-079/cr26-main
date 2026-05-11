@@ -68,7 +68,7 @@ class PageController extends Controller
     }
     public function edition(): View
     {
-        return view('gestion.edition');
+        return view('pages.modif_score');
     }
     public function exportation(): View
     {

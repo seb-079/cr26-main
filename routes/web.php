@@ -58,6 +58,11 @@ Route::get('/insertion_score/search', [ScoreController::class, 'searchEquipe'])
     ->name('scores.searchEquipe')
     ->middleware(CheckRole::class . ':50,60,90');
 
+Route::post('/scores/verifier/{id_equipe}/{id_epreuve}', [ScoreController::class, 'verifier'])
+    ->name('scores.verifier')
+    ->middleware(CheckRole::class . ':60,90');
+
+
 
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\UserController;
@@ -89,10 +94,10 @@ Route::prefix('gestion')->group(function () {
     Route::get('/colleges', [PageController::class, 'colleges'])->name('gestion.colleges');
     Route::get('/abonnement', [PageController::class, 'abonnement'])->name('gestion.abonnement');
     Route::get('/role', [PageController::class, 'role'])->name('gestion.role');
-    Route::get('/edition', [PageController::class, 'edition'])->name('gestion.edition');
     Route::get('/exportation', [PageController::class, 'exportation'])->name('gestion.exportation');
     Route::get('/modification', [PageController::class, 'modification'])->name('gestion.modification');
 });
+Route::get('/edition', [PageController::class, 'edition'])->name('gestion.edition');
 
 // Page Admin
 Route::prefix('admin')->group(function () {

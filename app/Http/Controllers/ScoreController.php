@@ -7,6 +7,7 @@ use App\Models\ScoreModel;
 use App\Models\EquipeModel;
 use App\Models\EpreuveModel;
 use App\Models\ConcoursModel;
+use App\Models\UserModel;
 use Illuminate\Support\Facades\Auth;
 
 class ScoreController extends Controller
@@ -71,10 +72,18 @@ class ScoreController extends Controller
      */
 public function liste(Request $request)
 {
-    $q = $request->input('q', null); 
+    $secretaires = UserModel::getAllSecretaires();
+
+    $q = $request->input('q', null);
     $scores = ScoreModel::getAllScoresDetails($q); 
-    return view('pages.modification_score.modif_score', compact('scores'));
+
+
+    $idSecretaire = $request->input('id_secretaire', null);
+    $scores = ScoreModel::getAllScoresDetails($q, $idSecretaire);
+   
+    return view('pages.modification_score.modif_score', compact('scores', 'secretaires'));
 }
+
 
     /**
      * Supprimer un score
@@ -124,6 +133,13 @@ public function edit($id_equipe, $id_epreuve)
             return back()->withErrors(['score' => 'Score invalide.']);
         }
 
+
+        if (ScoreModel::scoreExiste($validated['id_equipe'], $validated['id_epreuve'])
+            && !($validated['id_equipe'] == $id_equipe && $validated['id_epreuve'] == $id_epreuve)
+        ) {
+            return back()->withErrors(['score' => 'Un score existe déjà pour cette équipe et cette épreuve.']);
+         }
+
         ScoreModel::updateScore($id_equipe, $id_epreuve, [
             'id_equipe' => $validated['id_equipe'],
             'id_epreuve' => $validated['id_epreuve'],
@@ -146,4 +162,14 @@ public function edit($id_equipe, $id_epreuve)
 
         return response()->json($equipes);
     }
+
+public function verifier($id_equipe, $id_epreuve)
+{
+    
+    ScoreModel::atTrue($id_equipe, $id_epreuve);
+
+   
+    return back()->with('success', 'Score vérifié avec succès !');
+}
+
 }

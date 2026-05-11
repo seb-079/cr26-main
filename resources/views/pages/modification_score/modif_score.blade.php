@@ -2,10 +2,26 @@
 @section('content')
 
 <div class="mb-4">
-   <form action="{{ route('scores.liste') }}" method="GET">
-    <input type="text" name="q" value="{{ request('q') }}" placeholder="Rechercher une équipe ou une épreuve..." class="border px-4 py-2 w-1/2">
-    <button type="submit" class="btn btn-search ml-2">Rechercher</button>
-</form>
+    <form action="{{ route('scores.liste') }}" method="GET" class="flex items-center space-x-2">
+        {{-- Recherche texte --}}
+        <input type="text" name="q" value="{{ request('q') }}" 
+               placeholder="Rechercher une équipe ou une épreuve..." 
+               class="border px-4 py-2 w-1/3">
+
+        {{-- Sélection secrétaire --}}
+        <select name="id_secretaire" class="border px-4 py-2 w-1/4">
+            <option value="">Toutes les secrétaires</option>
+            @foreach($secretaires as $secretaire)
+                <option value="{{ $secretaire->id }}"
+                    {{ request('id_secretaire') == $secretaire->id ? 'selected' : '' }}>
+                    {{ $secretaire->name }}
+                </option>
+            @endforeach
+        </select>
+
+        {{-- Bouton rechercher --}}
+        <button type="submit" class="btn btn-search ml-2">Rechercher</button>
+    </form>
 </div>
 
 <table class="min-w-full bg-white border border-gray-200">
@@ -32,6 +48,14 @@
                         @method('DELETE')
                         <button type="submit" class="btn btn-delete" onclick="return confirm('Supprimer ce score ?')">Supprimer</button>
                     </form>
+
+
+                    @if(!$score->verifier)
+                        <form action="{{ route('scores.verifier', [$score->id_equipe, $score->id_epreuve]) }}" method="POST" class="inline">
+                            @csrf
+                            <button type="submit" class="btn btn-verify" onclick="return confirm('Voulez-vous vraiment vérifier ce score ?')">Vérifier</button>
+                        </form>
+                    @endif
                 </td>
             </tr>
         @empty

@@ -48,7 +48,7 @@
         <li><a href="{{ route('epreuves.index') }}">Épreuves</a></li>
         <li><a href="{{ route('classement.index') }}">Classement</a></li>
 
-        <li><a href="{{ route('saisieNote.index') }}">Saisie Note</a></li>
+        <li><a href="{{ route('scores.form') }}">Saisie Note</a></li>
 
         <!-- ----- Gestion ----- -->
         <li class="dropdown">
@@ -63,7 +63,7 @@
                 <li class="dropdown">
                     <a href="#">Résultat <span class="arrow">▶</span></a>
                     <ul class="dropdown-menu">
-                        <li><a href="{{ route('gestion.edition') }}">Édition</a></li>
+                        <li><a href="{{ route('scores.liste') }}">Édition</a></li>
                         <li><a href="{{ route('gestion.exportation') }}">Exportation</a></li>
                         <li><a href="{{ route('gestion.modification') }}">Modification</a></li>
                     </ul>
